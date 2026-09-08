@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 docker-compose.yml
 docker-compose.override.yml
 .secrets
 nginx.conf
+=======
+writing_to_log/log.txt
+project/database/
+node_modules/
+>>>>>>> 2d1c257 (bump gha actions)
