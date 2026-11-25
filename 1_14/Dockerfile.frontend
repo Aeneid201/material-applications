@@ -1,1 +1,42 @@
 # use here COPY 1_12 .
+#ubuntu image
+FROM ubuntu:24.04
+
+#configure dir
+WORKDIR /usr/src/app
+
+#expose container port 5001
+EXPOSE 5001
+
+#update local packages and install curl
+RUN  apt-get update && apt-get install -y curl
+
+#create nodesource dir
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
+#install nodejs
+RUN apt-get install -y nodejs
+
+#copy package.json and package-lock.json
+COPY 1_12/package* ./
+
+#verify installation
+RUN node -v && npm -v
+
+#install packages
+RUN npm install
+
+#copy all source files
+
+COPY 1_12 .
+
+#set env variable
+ENV REACT_APP_BACKEND_URL="http://localhost:8080"
+
+#build static files
+RUN npm run build
+
+#install serve to be able to serve project
+RUN npm install -g serve
+
+#serve project in the port we exposed
+CMD ["serve", "-s", "-l", "5001", "build"]
